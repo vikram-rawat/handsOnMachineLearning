@@ -1,0 +1,45 @@
+20/02/10 14:53:01 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+20/02/10 14:53:04 INFO SparkContext: Running Spark version 2.4.3
+20/02/10 14:53:04 WARN SparkConf: Note that spark.local.dir will be overridden by the value set by the cluster manager (via SPARK_LOCAL_DIRS in mesos/standalone/kubernetes and LOCAL_DIRS in YARN).
+20/02/10 14:53:04 INFO SparkContext: Submitted application: sparklyr
+20/02/10 14:53:04 INFO SecurityManager: Changing view acls to: Gigabyte
+20/02/10 14:53:04 INFO SecurityManager: Changing modify acls to: Gigabyte
+20/02/10 14:53:04 INFO SecurityManager: Changing view acls groups to: 
+20/02/10 14:53:04 INFO SecurityManager: Changing modify acls groups to: 
+20/02/10 14:53:04 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(Gigabyte); groups with view permissions: Set(); users  with modify permissions: Set(Gigabyte); groups with modify permissions: Set()
+20/02/10 14:53:04 INFO Utils: Successfully started service 'sparkDriver' on port 64956.
+20/02/10 14:53:04 INFO SparkEnv: Registering MapOutputTracker
+20/02/10 14:53:04 INFO SparkEnv: Registering BlockManagerMaster
+20/02/10 14:53:04 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+20/02/10 14:53:04 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+20/02/10 14:53:04 INFO DiskBlockManager: Created local directory at C:\Users\Gigabyte\AppData\Local\spark\spark-2.4.3-bin-hadoop2.7\tmp\local\blockmgr-a2abe0d8-a6d3-42eb-b20f-a5f37e80b7f4
+20/02/10 14:53:04 INFO MemoryStore: MemoryStore started with capacity 413.9 MB
+20/02/10 14:53:04 INFO SparkEnv: Registering OutputCommitCoordinator
+20/02/10 14:53:04 WARN Utils: The configured local directories are not expected to be URIs; however, got suspicious values [C:/Users/Gigabyte/AppData/Local/spark/spark-2.4.3-bin-hadoop2.7/tmp/local]. Please check your configured local directories.
+20/02/10 14:53:04 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+20/02/10 14:53:05 INFO SparkUI: Bound SparkUI to 127.0.0.1, and started at http://127.0.0.1:4040
+20/02/10 14:53:05 INFO SparkContext: Added JAR file:/C:/Users/Gigabyte/Documents/R/win-library/3.6/sparklyr/java/sparklyr-2.4-2.11.jar at spark://127.0.0.1:64956/jars/sparklyr-2.4-2.11.jar with timestamp 1581326585037
+20/02/10 14:53:05 INFO Executor: Starting executor ID driver on host localhost
+20/02/10 14:53:05 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 64977.
+20/02/10 14:53:05 INFO NettyBlockTransferService: Server created on 127.0.0.1:64977
+20/02/10 14:53:05 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+20/02/10 14:53:05 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 127.0.0.1, 64977, None)
+20/02/10 14:53:05 INFO BlockManagerMasterEndpoint: Registering block manager 127.0.0.1:64977 with 413.9 MB RAM, BlockManagerId(driver, 127.0.0.1, 64977, None)
+20/02/10 14:53:05 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 127.0.0.1, 64977, None)
+20/02/10 14:53:05 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 127.0.0.1, 64977, None)
+20/02/10 14:53:07 INFO SharedState: loading hive config file: file:/C:/Users/Gigabyte/AppData/Local/spark/spark-2.4.3-bin-hadoop2.7/conf/hive-site.xml
+20/02/10 14:53:07 INFO SharedState: Setting hive.metastore.warehouse.dir ('C:/Users/Gigabyte/AppData/Local/spark/spark-2.4.3-bin-hadoop2.7/tmp/hive') to the value of spark.sql.warehouse.dir ('C:/Users/Gigabyte/AppData/Local/spark/spark-2.4.3-bin-hadoop2.7/tmp/hive').
+20/02/10 14:53:07 INFO SharedState: Warehouse path is 'C:/Users/Gigabyte/AppData/Local/spark/spark-2.4.3-bin-hadoop2.7/tmp/hive'.
+20/02/10 14:53:09 INFO StateStoreCoordinatorRef: Registered StateStoreCoordinator endpoint
+20/02/10 14:53:17 INFO CodeGenerator: Code generated in 460.4815 ms
+20/02/10 14:56:36 INFO SparkContext: Invoking stop() from shutdown hook
+20/02/10 14:56:36 INFO SparkUI: Stopped Spark web UI at http://127.0.0.1:4040
+20/02/10 14:56:36 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+20/02/10 14:56:36 INFO MemoryStore: MemoryStore cleared
+20/02/10 14:56:36 INFO BlockManager: BlockManager stopped
+20/02/10 14:56:36 INFO BlockManagerMaster: BlockManagerMaster stopped
+20/02/10 14:56:37 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+20/02/10 14:56:37 INFO SparkContext: Successfully stopped SparkContext
+20/02/10 14:56:37 INFO ShutdownHookManager: Shutdown hook called
+20/02/10 14:56:37 INFO ShutdownHookManager: Deleting directory C:\Users\Gigabyte\AppData\Local\spark\spark-2.4.3-bin-hadoop2.7\tmp\local\spark-9b06a61d-988b-4466-8001-a86fcf835a9a
+20/02/10 14:56:37 INFO ShutdownHookManager: Deleting directory C:\Users\Gigabyte\AppData\Local\Temp\spark-827cdd46-f2dc-40ab-81ca-bce2c8d601e8
