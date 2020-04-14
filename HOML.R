@@ -11,11 +11,16 @@ library("ggfortify")
 library("plotluck")
 library("inspectdf")
 
-# --- chapter libraries --- #
+# --- chapter libraries 2--- #
 
 library("rsample")   # for resampling procedures
 library("caret")     # for resampling and model training
 library("h2o")       # for resampling and model training
+
+# --- chapter libraries 3--- #
+
+library("ggplot2")  # for awesome graphics
+library("visdat")   # for additional visualizations
 
 # --- others --- #
 
@@ -85,3 +90,43 @@ split <- initial_split(ames,
 
 ames_train  <- training(split)
 ames_test <- testing(split)
+
+# chapter 3 ---------------------------------------------------------------
+
+transformed_response <- log(ames_train$Sale_Price)
+
+ames_recipe <- recipe(Sale_Price ~ ., data = ames_train) %>%
+  step_log(all_outcomes())
+
+ames_recipe
+
+# Log transform a value
+y <- log(10)
+
+# Undo log-transformation
+exp(y)
+## [1] 10
+lambda <- 10
+
+# Box Cox transform a value
+y <- forecast::BoxCox(10, lambda)
+
+# Inverse Box Cox function
+inv_box_cox <- function(x, lambda) {
+  # for Box-Cox, lambda = 0 --> log transform
+  if (lambda == 0) exp(x) else (lambda*x + 1)^(1/lambda) 
+}
+
+# Undo Box Cox-transformation
+inv_box_cox(y, lambda)
+
+sum(is.na(AmesHousing::ames_raw))
+
+AmesHousing::ames_raw %>% 
+  vis_dat()
+
+AmesHousing::ames_raw %>% 
+  inspect_na() %>% 
+  show_plot()
+
+
