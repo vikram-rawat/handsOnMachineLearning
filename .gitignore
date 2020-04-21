@@ -3,3 +3,7 @@
 .RData
 .Ruserdata
 derby.log
+logs/
+logs/log4j.spark.log
+logs/log4j.spark.log.2020-03-06
+*.log
