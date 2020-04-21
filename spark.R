@@ -1,18 +1,19 @@
 # load libraries ----------------------------------------------------------
 
-library(sparklyr)
-library(data.table)
-library(magrittr)
-library(ggplot2)
-library(DBI)
-library(dplyr)
-library(arrow)
-library(inspectdf)
-library(plotluck)
-library(skimr)
-library(ggfortify)
-library(dbplot)
-library(corrr)
+library("sparklyr")
+library("data.table")
+library("magrittr")
+library("ggplot2")
+library("DBI")
+library("dplyr")
+library("arrow")
+library("inspectdf")
+library("plotluck")
+library("skimr")
+library("ggfortify")
+library("dbplot")
+library("modeldb")
+library("corrr")
 
 # set defaults ------------------------------------------------------------
 
@@ -22,21 +23,30 @@ theme_set(theme_bw())
 # use Spark ---------------------------------------------------------------
 
 spark <- spark_connect(master = "local",
-                       version = "2.4.4")
+                       version = "2.4.5")
 
-sc <- spark_connect(
-  master = "local",
-  version = "2.4.4",
-  config = list(sparklyr.gateway.address = "127.0.0.1")
-)
+# sc <- spark_connect(
+#   master = "local",
+#   version = "2.4.4",
+#   config = list(sparklyr.gateway.address = "127.0.0.1")
+# )
 
-getOption('timeout')
-options(timeout = 1e5L)
+# getOption('timeout')
+# options(timeout = 1e5L)
+# options(download.file.method = "curl")
+# options(download.file.method = "libcurl")
+# options(download.file.mode = "a")
 # spark_versions()
 # spark_available_versions()
 # spark_installed_versions()
-spark_uninstall(version = "2.4.4", hadoop_version = "2.7")
-spark_install(version = "2.4.4", hadoop_version = "2.7", verbose = TRUE)
+# spark_uninstall(version = "2.4.4", hadoop_version = "2.7")
+# spark_install(
+#   version = "2.4.5",
+#   hadoop_version = "2.7",
+#   verbose = TRUE,
+#   reset =  TRUE,
+#   logging = TRUE 
+# )
 # spark_uninstall(version = "3.0.0-preview",hadoop_version = "3.2")
 # spark_install(version = "3.0.0-preview",hadoop_version = "3.2")
 # spark_web(spark)
@@ -157,7 +167,6 @@ cars %>%
   dbplot_histogram(mpg, binwidth = 3) +
   labs(title = "MPG Distribution",
        subtitle = "Histogram over miles per gallon")
-
 
 dbplot_raster(cars, mpg, wt, resolution = 16)
 
