@@ -96,7 +96,6 @@ model %>%
   collect() %>%
   plotluck(hp ~ mpg)
 
-
 # spark_write_csv(x = cars,
 #                 path =  "folder/cars.csv",
 #                 header = TRUE,
@@ -162,7 +161,6 @@ car_group <- cars %>%
   collect() %>%
   print()
 
-
 cars %>%
   dbplot_histogram(mpg, binwidth = 3) +
   labs(title = "MPG Distribution",
@@ -170,11 +168,9 @@ cars %>%
 
 dbplot_raster(cars, mpg, wt, resolution = 16)
 
-
 cached_cars <- cars %>% 
   mutate(cyl = paste0("cyl_", cyl)) %>%
   compute("cached_cars")
-
 
 # spark_disconnect(spark)
 # spark_disconnect(sc)
