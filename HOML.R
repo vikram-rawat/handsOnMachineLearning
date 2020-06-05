@@ -30,18 +30,18 @@ library("tidymodels")
 
 setDTthreads(0L)
 
-theme_set(theme_economist(dkpanel = FALSE))
+theme_set(theme_fivethirtyeight())
 
 h2o.no_progress()  # turn off h2o progress bars
-h2o.init()         # launch h2o
+h2o.init(nthreads = -1)         # launch h2o
 
 # get Data -----------------------------------------------------------------
 
-  # ---*** Ames housing data
+# ---*** Ames housing data
 ames <- AmesHousing::make_ames()
 
 ames.h2o <- as.h2o(ames)
-  # ---*** Job attrition data
+# ---*** Job attrition data
 churn <- rsample::attrition %>%
   mutate_if(is.ordered, .funs = factor, ordered = FALSE)
 
@@ -56,21 +56,27 @@ train_3  <- training(split_1)
 test_3   <- testing(split_1)
 
 
-split_2 <- h2o.splitFrame(ames.h2o, ratios = 0.7,
+split_2 <- h2o.splitFrame(ames.h2o,
+                          ratios = 0.7,
                           seed = 123)
+
 train_4 <- split_2[[1]]
 test_4  <- split_2[[2]]
 
+  ## imbalance in yes no proportions
 churn$Attrition %>%
   table() %>%
   prop.table()
 
+
 split_strat  <- initial_split(churn, prop = 0.7,
                               strata = "Attrition")
+
 train_strat  <- training(split_strat)
 test_strat   <- testing(split_strat)
 
 lm(speed ~ dist, cars) %>% autoplot()
+
 vfold_cv(ames, v = 10)
 
 splits <- bootstraps(ames, times = 10)
@@ -79,13 +85,12 @@ splits$splits %>%
   vapply(function(x) {
     mean(as.data.table(x)$Lot_Frontage)
   },
-  FUN.VALUE = double(1)
-  )
+  FUN.VALUE = double(1))
 
 # Stratified sampling with the rsample package
 set.seed(123)
-split <- initial_split(ames, 
-                       prop = 0.7, 
+split <- initial_split(ames,
+                       prop = 0.7,
                        strata = "Sale_Price")
 
 ames_train  <- training(split)
@@ -114,7 +119,11 @@ y <- forecast::BoxCox(10, lambda)
 # Inverse Box Cox function
 inv_box_cox <- function(x, lambda) {
   # for Box-Cox, lambda = 0 --> log transform
-  if (lambda == 0) exp(x) else (lambda*x + 1)^(1/lambda) 
+  if (lambda == 0)
+    exp(x)
+  else
+    (lambda * x + 1)
+  ^ (1 / lambda)
 }
 
 # Undo Box Cox-transformation
@@ -122,11 +131,9 @@ inv_box_cox(y, lambda)
 
 sum(is.na(AmesHousing::ames_raw))
 
-AmesHousing::ames_raw %>% 
+AmesHousing::ames_raw %>%
   vis_dat()
 
-AmesHousing::ames_raw %>% 
-  inspect_na() %>% 
+AmesHousing::ames_raw %>%
+  inspect_na() %>%
   show_plot()
-
-
