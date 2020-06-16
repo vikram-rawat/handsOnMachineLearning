@@ -10,6 +10,7 @@ library("dplyr")
 library("ggfortify")
 library("plotluck")
 library("inspectdf")
+library("stringi")
 
 # --- chapter libraries 2--- #
 
@@ -75,9 +76,14 @@ split_strat  <- initial_split(churn, prop = 0.7,
 train_strat  <- training(split_strat)
 test_strat   <- testing(split_strat)
 
-lm(speed ~ dist, cars) %>% autoplot()
-
 vfold_cv(ames, v = 10)
+
+h2o.glm(
+  x = "Year_Sold",
+  y = "Sale_Type",
+  training_frame = ames.h2o,
+  nfolds = 10
+)
 
 splits <- bootstraps(ames, times = 10)
 
