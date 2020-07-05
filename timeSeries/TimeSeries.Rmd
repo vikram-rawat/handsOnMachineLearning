@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Check how xts works and time series in general works
+
+```{r setup}
+library("xts", help, pos = 2, lib.loc = NULL)
+library("data.table", help, pos = 2, lib.loc = NULL)
+library("magrittr", help, pos = 2, lib.loc = NULL)
+library("PerformanceAnalytics")
+library("TTR")
+library("ggTimeSeries")
+library("GGally")
+
+data(sample_matrix)
+data(edhec)
+R <- edhec[,1:4]
+head(R)
+head(sample_matrix)
+
+```
+
+```{r data}
+sample_matrix %>% class()
+
+
+matrix_xts <- as.xts(sample_matrix, dateFormat='Date')
+str(matrix_xts)
+
+df_xts <- as.xts(as.data.frame(sample_matrix),
+                important='very important info!')
+
+str(df_xts)
+
+xts(1:10, Sys.Date()+1:10)
+
+matrix_xts["2007-01-06"]
+matrix_xts["2007-03"]
+matrix_xts["/2007-01-03"]
+matrix_xts["2007-06-24/"]
+matrix_xts['2007-05-28/2007-06-02']
+```
+
+```{r plot}
+
+plot(matrix_xts)
+plot(matrix_xts[,"Close"],subset = "2007-01")
+plot(matrix_xts[,"Close"],subset = "2007-05-11/2007-06-02")
+
+plot(matrix_xts[,"Close"], col="blue", lwd=2, lty=2)
+```
+
+```{r TTR}
+
+plot(matrix_xts[,"Close"])
+lines(TTR::SMA(matrix_xts[,"Close"], n = 20), col="blue")
+lines(TTR::SMA(matrix_xts[,"Close"], n = 50), col="red", lty=2)
+
+# add legend to panel 1
+addLegend("topright", legend.names = c("Close", "SMA(20)", "SMA(50)"), 
+          lty=c(1, 1, 2), lwd=c(2, 1, 1),
+          col=c("black", "blue", "red"))
+
+```
+
+```{r panel}
+plot(matrix_xts[,"Close"])
+
+lines(Return.calculate(matrix_xts[,"Close"]), type="h", on=NA)
+addPanel(Return.calculate, method="discrete", type="h")
+
+plot(R, multi.panel=TRUE, type="h",dn.col = "red",up.col = "green")
+```
+

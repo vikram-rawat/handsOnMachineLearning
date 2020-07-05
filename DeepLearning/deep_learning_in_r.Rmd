@@ -1,0 +1,53 @@
+---
+title: "Deep Learning"
+output: 
+  html_notebook:
+    code_folding: "hide"
+---
+
+
+```{r setup, warning=FALSE}
+
+library(nnet)
+library(caret)
+library(plotluck)
+library(inspectdf)
+library(magrittr)
+
+##### Set Defaults
+
+theme_set(new = theme_bw())
+
+options(digits = 4)
+
+```
+
+```{r data}
+data("diamonds")
+
+
+```
+
+```{r inspect, warning=FALSE}
+
+inspect_types(diamonds) %>% 
+  show_plot()
+
+inspect_na(diamonds) %>% 
+  show_plot()
+
+inspect_cor(diamonds,
+            method = "spearman") %>% 
+  show_plot()
+
+```
+
+```{r plot,message=FALSE}
+
+plotForm <- as.formula(cut ~ clarity + color)
+
+plotluck(data = diamonds,
+         formula = plotForm,
+         weights = price)
+
+```

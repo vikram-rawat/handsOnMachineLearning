@@ -87,3 +87,4 @@ chrnPrd$confusion %>%
 
 autoplot(chrnRslt,type = "roc")
 
+# pipelines ---------------------------------
