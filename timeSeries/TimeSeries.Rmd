@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output: 
+  html_notebook:
+    code_folding: "hide"
 ---
 
 Check how xts works and time series in general works
@@ -13,7 +15,9 @@ library("PerformanceAnalytics")
 library("TTR")
 library("ggTimeSeries")
 library("GGally")
+library("tsibble")
 
+####
 data(sample_matrix)
 data(edhec)
 R <- edhec[,1:4]
