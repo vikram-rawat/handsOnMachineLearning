@@ -38,13 +38,16 @@ h2o.init(nthreads = -1)         # launch h2o
 
 # get Data -----------------------------------------------------------------
 
+data("attrition")
 # ---*** Ames housing data
 ames <- AmesHousing::make_ames()
 
 ames.h2o <- as.h2o(ames)
 # ---*** Job attrition data
-churn <- rsample::attrition %>%
-  mutate_if(is.ordered, .funs = factor, ordered = FALSE)
+churn <- attrition %>%
+  mutate_if(is.ordered, 
+            .funs = factor, 
+            ordered = FALSE)
 
 churn.h2o <- as.h2o(churn)
 
