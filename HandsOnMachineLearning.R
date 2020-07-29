@@ -5,12 +5,10 @@ library("mlr3verse")
 library("magrittr")
 library("ggplot2")
 library("ggthemes")
-library("neuralnet")
-library("dplyr")
-library("ggfortify")
 library("plotluck")
 library("inspectdf")
 library("stringi")
+library("infer")
 
 # --- chapter libraries 2--- #
 
@@ -26,10 +24,15 @@ library("visdat")   # for additional visualizations
 # --- others --- #
 
 library("tidymodels")
+library("neuralnet")
+library("dplyr")
+library("ggfortify")
 
 # set_defaults ------------------------------------------------------------
 
 setDTthreads(0L)
+
+set.seed(123)
 
 theme_set(theme_fivethirtyeight())
 
@@ -68,16 +71,24 @@ train_4 <- split_2[[1]]
 test_4  <- split_2[[2]]
 
   ## imbalance in yes no proportions
+
 churn$Attrition %>%
   table() %>%
   prop.table()
-
 
 split_strat  <- initial_split(churn, prop = 0.7,
                               strata = "Attrition")
 
 train_strat  <- training(split_strat)
 test_strat   <- testing(split_strat)
+
+train_strat$Attrition %>% 
+  table() %>% 
+  prop.table()
+
+test_strat$Attrition %>% 
+  table() %>% 
+  prop.table()
 
 vfold_cv(ames, v = 10)
 
@@ -97,7 +108,7 @@ splits$splits %>%
   FUN.VALUE = double(1))
 
 # Stratified sampling with the rsample package
-set.seed(123)
+
 split <- initial_split(ames,
                        prop = 0.7,
                        strata = "Sale_Price")

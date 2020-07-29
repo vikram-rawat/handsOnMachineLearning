@@ -10,6 +10,8 @@ library("dplyr")
 library("ggfortify")
 library("plotluck")
 library("inspectdf")
+library("infer")
+library("stringi")
 
 library("ggplot2")  # for awesome graphics
 library("visdat")   # for additional visualizations
