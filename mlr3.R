@@ -22,12 +22,15 @@ setDTthreads(0L)
 
 theme_set(theme_fivethirtyeight())
 
-# Data Ames -----------------------------------------------------------------
+# Get Dataa -----------------------------------------------------------------
+
+data("attrition")
+data("ames")
 
 # __create Task -------------------------------------------------------------
 
 amsTsk <- TaskRegr$new(id = "ames",
-                       backend = AmesHousing::make_ames(),
+                       backend = ames,
                        target = "Sale_Price")
 
 autoplot(amsTsk)
@@ -51,7 +54,7 @@ amsRsmp$instantiate(amsTsk)
 chrnTsk <- TaskClassif$new(
   id = "churn",
   backend =
-    rsample::attrition %>%
+    attrition %>%
     mutate_if(is.ordered,
               .funs = factor,
               ordered = FALSE),
