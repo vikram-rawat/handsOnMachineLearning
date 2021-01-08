@@ -42,10 +42,12 @@ h2o.init(nthreads = -1)         # launch h2o
 # get Data -----------------------------------------------------------------
 
 data("attrition")
-# ---*** Ames housing data
-ames <- AmesHousing::make_ames()
 
+# ---*** Ames housing data
+
+ames <- AmesHousing::make_ames()
 ames.h2o <- as.h2o(ames)
+
 # ---*** Job attrition data
 churn <- attrition %>%
   mutate_if(is.ordered, 
@@ -143,13 +145,15 @@ inv_box_cox <- function(x, lambda) {
     exp(x)
   else
     (lambda * x + 1)
-  ^ (1 / lambda)
+  (1 / lambda)
 }
 
 # Undo Box Cox-transformation
 inv_box_cox(y, lambda)
 
-sum(is.na(AmesHousing::ames_raw))
+sum(
+  is.na(AmesHousing::ames_raw)
+)
 
 AmesHousing::ames_raw %>%
   vis_dat()
@@ -157,3 +161,4 @@ AmesHousing::ames_raw %>%
 AmesHousing::ames_raw %>%
   inspect_na() %>%
   show_plot()
+

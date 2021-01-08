@@ -25,7 +25,6 @@ options(digits = 4)
 ```{r data}
 data("diamonds")
 
-
 ```
 
 ```{r inspect, warning=FALSE}

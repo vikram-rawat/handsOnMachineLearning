@@ -24,28 +24,95 @@ theme_set(theme_fivethirtyeight())
 
 # Get Dataa -----------------------------------------------------------------
 
-data("attrition")
-data("ames")
+data("ames_raw", package = "AmesHousing" )
 
 # __create Task -------------------------------------------------------------
 
-amsTsk <- TaskRegr$new(id = "ames",
-                       backend = ames,
-                       target = "Sale_Price")
+ames_raw <- data.table(
+  ames_raw,
+  check.names = TRUE
+)
 
-autoplot(amsTsk)
+ams_tsk <- TaskRegr$new(
+  id = "ames",
+  backend = ames_raw,
+  target = "SalePrice"
+)
+
+autoplot(ams_tsk)
+
+ams_tsk$ncol
+ams_tsk$nrow
+ams_tsk$data(
+  rows = 1:10,
+  cols = c("Electrical", "Heating")
+)
+ams_tsk$target_names
+ams_tsk$feature_names
+ams_tsk$feature_types
+
+ams_tsk %>% 
+  as.data.table() %>% 
+  summary()
+
+ams_tsk$col_info
+ams_tsk$col_roles
+ams_tsk$set_col_roles(
+  cols = "Yr.Sold",
+  roles = "order")
+
+ams_tsk$row_ids
+ams_tsk$row_names
+ams_tsk$row_roles
+
+ams_tsk$set_row_roles(
+  rows = ames_raw[,seq(to = .N-10,from = .N)],
+  roles = "validation"
+)
+
+ams_tsk$select(c("Year.Built", "Year.Remod.Add"))
+ams_tsk$filter(1:5)
+ams_tsk$head(10)
+# ams_tsk$rbind(ames_raw)
+# ams_tsk$cbind(ames_raw)
+# ams_tsk$row_roles$use <- 1:2920
+# ams_tsk$col_roles$feature <- names(ames_raw)
+
+ams_tsk %>% 
+  class
+
+ams_tsk$select(c("Year.Built", "Year.Remod.Add"))
+autoplot(ams_tsk, type = "pairs")
+ams_tsk$col_roles$feature <- names(ames_raw)
+
+# __create learners ---------------------------------------------------------
+
+ams_lrn <- LearnerRegrGlmnet$new()
+
+ams_lrn$param_set
+ams_lrn$param_set$values = list(family = "poisson")
+ams_lrn$param_set$values = mlr3misc::insert_named(
+  ams_lrn$param_set$values,
+  list(
+    type.multinomial = "grouped",
+    type.measure = "auc"
+    )
+)
+ams_lrn$param_set$values
+
+ams_lrn$data_formats
+ams_lrn$encapsulate
+ams_lrn$errors
+ams_lrn$feature_types
+ams_lrn$fallback
+
 
 # __create Resampling -------------------------------------------------------
-
 
 amsRsmp <- rsmp("holdout", ratio = 0.7)
 amsRsmp <- rsmp("cv", folds = 10)
 
 amsRsmp$instantiate(amsTsk)
-
-# __create learners ---------------------------------------------------------
-
-
 
 # Data Churn -----------------------------------------------------------------
 
