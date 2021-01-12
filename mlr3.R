@@ -43,10 +43,10 @@ autoplot(ams_tsk)
 
 ams_tsk$ncol
 ams_tsk$nrow
-ams_tsk$data(
-  rows = 1:10,
-  cols = c("Electrical", "Heating")
-)
+# ams_tsk$data(
+#   rows = 1:10,
+#   cols = c("Electrical", "Heating")
+# )
 ams_tsk$target_names
 ams_tsk$feature_names
 ams_tsk$feature_types
@@ -57,9 +57,9 @@ ams_tsk %>%
 
 ams_tsk$col_info
 ams_tsk$col_roles
-ams_tsk$set_col_roles(
-  cols = "Yr.Sold",
-  roles = "order")
+# ams_tsk$set_col_roles(
+#   cols = "Yr.Sold",
+#   roles = "order")
 
 ams_tsk$row_ids
 ams_tsk$row_names
@@ -70,8 +70,14 @@ ams_tsk$set_row_roles(
   roles = "validation"
 )
 
-ams_tsk$select(c("Year.Built", "Year.Remod.Add"))
-ams_tsk$filter(1:5)
+
+# ams_tsk$select(c("Year.Built", "Year.Remod.Add"))
+ams_tsk$select(
+  ams_tsk$feature_names[ams_tsk$feature_types$type == "integer"]
+)
+
+ams_tsk$col_roles
+# ams_tsk$filter(1:5)
 ams_tsk$head(10)
 # ams_tsk$rbind(ames_raw)
 # ams_tsk$cbind(ames_raw)
@@ -79,25 +85,28 @@ ams_tsk$head(10)
 # ams_tsk$col_roles$feature <- names(ames_raw)
 
 ams_tsk %>% 
-  class
-
-ams_tsk$select(c("Year.Built", "Year.Remod.Add"))
-autoplot(ams_tsk, type = "pairs")
-ams_tsk$col_roles$feature <- names(ames_raw)
+  class()
+ams_tsk$missings()
+# ams_tsk$select(c("Year.Built", "Year.Remod.Add"))
+# autoplot(ams_tsk, type = "pairs")
+# ams_tsk$col_roles$feature <- names(ames_raw)
 
 # __create learners ---------------------------------------------------------
+# LearnerRegrLM$new()
+# mlr_learners$get()
 
-ams_lrn <- LearnerRegrGlmnet$new()
+# ams_lrn <- lrn("regr.glmnet")
+ams_lrn <- lrn("regr.lm")
 
 ams_lrn$param_set
-ams_lrn$param_set$values = list(family = "poisson")
-ams_lrn$param_set$values = mlr3misc::insert_named(
-  ams_lrn$param_set$values,
-  list(
-    type.multinomial = "grouped",
-    type.measure = "auc"
-    )
-)
+# ams_lrn$param_set$values = list(family = "gaussian")
+# ams_lrn$param_set$values = mlr3misc::insert_named(
+#   ams_lrn$param_set$values,
+#   list(
+#     type.multinomial = "grouped",
+#     type.measure = "auc"
+#     )
+# )
 ams_lrn$param_set$values
 
 ams_lrn$data_formats
@@ -106,6 +115,51 @@ ams_lrn$errors
 ams_lrn$feature_types
 ams_lrn$fallback
 
+# train and Predict -------------------------------------------------------
+
+train <- sample(ams_tsk$nrow, ams_tsk$nrow * 0.70)
+test <- setdiff(seq_len(ams_tsk$nrow), train)
+
+ams_lrn$model
+
+complete <- ams_tsk$data() %>% 
+  complete.cases() %>% 
+  which() 
+
+ams_tsk$filter(complete)
+
+ams_tsk$missings()
+
+ams_lrn$train(
+  task = ams_tsk,
+  row_ids = train
+)
+
+ams_lrn$model
+
+test <- (test %in% complete) %>% 
+  which() %>% 
+  test[.]
+
+ams_tsk$data(rows = test)
+
+ams_prdt <- ams_lrn$predict(
+  task = ams_tsk,
+  row_ids = test)
+
+ams_prdt$man
+ams_prdt$missing
+ams_prdt$truth
+ams_prdt$task_type
+ams_prdt$task_properties
+ams_prdt$se
+ams_prdt$row_ids
+ams_prdt$response
+ams_prdt$predict_types
+
+autoplot(ams_prdt)
+# autoplot(ams_prdt, type = "roc")
+# ams_lrn$predict_type = "prob"
 
 # __create Resampling -------------------------------------------------------
 
