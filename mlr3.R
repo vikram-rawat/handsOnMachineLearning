@@ -19,7 +19,6 @@ library("visdat")   # for additional visualizations
 # set_defaults ------------------------------------------------------------
 
 setDTthreads(0L)
-
 theme_set(theme_fivethirtyeight())
 
 # Get Dataa -----------------------------------------------------------------

@@ -52,12 +52,12 @@ annotate(s, Maxent_Chunk_Annotator(probs = TRUE), a3)
 NLP::sents()
 
 NLP::ngrams(
-    x = paste0(letters, "asda", 1:26), 3
+  x = paste0(letters, "asda", 1:26), 3
 )
 
 quanteda::char_ngrams(
-    x = paste0(letters, "asda", 1:26), 3
-  )
+  x = paste0(letters, "asda", 1:26), 3
+)
 
 myDfm <- dfm(
   c("1780 wemmel", "2015 schlemmel"),
@@ -329,3 +329,87 @@ textplot_wordcloud(
   rotation = 0.25,
   color = RColorBrewer::brewer.pal(8, "Dark2")
 )
+
+# quanteda book -----------------------------------------------------------
+
+chat_data %>%
+  corpus(
+    text_field = "user",
+    docid_field = "chat_no"
+  ) %>%
+  corpus_reshape(to = "sentence") %>%
+  corpus_subset(user_sentiment_score > 1)
+
+# ndoc(user_tokens)
+# prd$docs_newspace
+# methods("corpus")
+# getAnywhere("phrase.character")
+# selectMethod(f = "corpus",
+#              signature = "data.frame")
+# getMethod("corpus.data.frame")
+# getMethod("phrase")
+
+phrase("asdfasd asdaa")
+
+kw_asylum <- kwic(user_tokens, pattern = phrase("dank"))
+head(kw_asylum)
+
+# user_tokens %>%
+#   textstat_collocations(size = 4) %>%
+#   as.data.table() %>%
+#   .[order(-count)]
+
+kwic(
+  tokens_remove(user_tokens, letters),
+  pattern = "dank"
+) %>%
+  head()
+
+kwic(user_tokens, ger_emo_dict) %>%
+  head()
+
+tokens_lookup(user_tokens, ger_emo_dict) %>%
+  head()
+
+user_tokens %>%
+  tokens_compound(pattern = phrase("hab *")) %>%
+  dfm() %>%
+  topfeatures()
+
+user_tokens %>%
+  tokens_compound(pattern = phrase("hab *")) %>%
+  dfm() %>%
+  dfm_weight(scheme = "prop")
+
+user_tokens %>%
+  tokens_compound(pattern = phrase("hab *")) %>%
+  dfm() %>%
+  textstat_frequency()
+
+user_tokens %>%
+  tokens_compound(pattern = phrase("hab *")) %>%
+  dfm() %>%
+  dfm_tfidf() %>%
+  topfeatures()
+
+corpus.un.sample <- corpus_sample(mycorpus, size = 500)
+
+corp_news <- download("data_corpus_guardian")
+
+dfmat_news <- dfm(corp_news, remove = stopwords("en"), remove_punct = TRUE)
+dfmat_news <- dfm_remove(dfmat_news, pattern = c("*-time", "updated-*", "gmt", "bst", "|"))
+dfmat_news <- dfm_trim(dfmat_news, min_termfreq = 100)
+
+topfeatures(dfmat_news)
+nfeat(dfmat_news)
+fcmat_news <- fcm(dfmat_news)
+dim(fcmat_news)
+topfeatures(fcmat_news)
+feat <- names(topfeatures(fcmat_news, 50))
+fcmat_news_select <- fcm_select(fcmat_news, pattern = feat, selection = "keep")
+dim(fcmat_news_select)
+
+size <- log(colSums(dfm_select(dfmat_news, feat, selection = "keep")))
+
+set.seed(144)
+textplot_network(fcmat_news_select, min_freq = 0.8, vertex_size = size / max(size) * 3)
